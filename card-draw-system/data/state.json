@@ -1,0 +1,20 @@
+{
+  "collection": [
+    "a-batch-60"
+  ],
+  "history": [
+    {
+      "id": "0f1d34c3-43c5-4a01-876e-c92c4b568140",
+      "dayKey": "2026-05-20",
+      "cardId": "a-batch-60",
+      "cardTitle": "【情感电量补给卡】",
+      "rarityTier": "A",
+      "rarityName": "A",
+      "createdAt": "2026-05-20T22:10:03.206Z"
+    }
+  ],
+  "customCards": {},
+  "usedCards": {},
+  "starterGiftClaimed": false,
+  "bonusDrawsRemaining": 0
+}

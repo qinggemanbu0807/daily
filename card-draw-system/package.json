@@ -1,0 +1,11 @@
+{
+  "name": "520-card-draw-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A private frontend-only card draw website.",
+  "scripts": {
+    "start": "node server.js",
+    "build:static-cards": "node scripts/build-static-cards.js",
+    "check": "node --check public/app.js && node --check scripts/build-static-cards.js"
+  }
+}

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f7c9ce">
+    <title>小猪的每日抽卡</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="static-cards.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="phone-shell">
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">DAILY CARD</span>
+          <h1>小猪的今日抽卡</h1>
+          <p id="statusLine">正在准备今天的惊喜。</p>
+        </div>
+        <button class="round-icon" id="refreshButton" type="button" aria-label="刷新">
+          <span aria-hidden="true">↻</span>
+        </button>
+      </section>
+
+      <section class="countdown-panel" aria-label="到8月15号的倒计时">
+        <span>距离见面（8月15日）还有</span>
+        <strong id="countdownText">-- 天 --:--:--</strong>
+      </section>
+
+      <section class="draw-stage">
+        <button class="starter-gift" id="starterGift" type="button" hidden aria-label="领取抽卡体验礼包">
+          <span class="starter-gift-spark starter-gift-spark-a" aria-hidden="true"></span>
+          <span class="starter-gift-spark starter-gift-spark-b" aria-hidden="true"></span>
+          <span class="starter-gift-body" aria-hidden="true">
+            <span class="starter-gift-lid"></span>
+            <span class="starter-gift-box"></span>
+            <span class="starter-gift-bow"></span>
+          </span>
+          <span class="starter-gift-label">体验礼包</span>
+        </button>
+        <span class="stage-charm stage-charm-star" aria-hidden="true"></span>
+        <span class="stage-charm stage-charm-heart" aria-hidden="true"></span>
+        <div class="card-wrap" id="cardWrap" aria-live="polite">
+          <article class="draw-card" id="drawCard">
+            <div class="card-face card-front">
+              <span class="card-rarity" id="frontRarity">小猪专属</span>
+              <h2 id="frontText">今天会抽到什么呢</h2>
+              <p>点击下方按钮，看看今天的喜欢长什么样吧~</p>
+            </div>
+            <div class="card-face card-back">
+              <span class="card-rarity" id="cardRarity">温柔</span>
+              <h2 id="cardTitle">等待抽卡</h2>
+              <p id="cardText">卡片会在这里翻开。</p>
+              <strong id="cardAction">今日兑换</strong>
+            </div>
+          </article>
+        </div>
+
+        <button class="draw-button" id="drawButton" type="button">
+          <span>抽取今日卡片</span>
+        </button>
+        <p class="reset-copy" id="resetCopy">每天早上 7 点会刷新一次。</p>
+
+        <button class="collection-entry" id="openCollectionButton" type="button">
+          <span>收藏夹</span>
+          <strong id="collectionEntryCount">0 / 90</strong>
+        </button>
+
+        <div class="usage-panel is-hidden" id="usagePanel">
+          <div class="usage-head">
+            <div>
+              <span class="eyebrow">CARD MEMORY</span>
+              <h2>这张卡的使用记录</h2>
+            </div>
+            <button class="use-card-button" id="useCardButton" type="button">使用这张卡</button>
+          </div>
+          <p class="used-time" id="usedTimeText"></p>
+          <label class="memory-field is-hidden" id="memoryField">
+            使用后的回忆
+            <textarea id="memoryInput" maxlength="600" rows="4" placeholder="比如这张卡什么时候用掉了、发生了什么、感觉怎么样。"></textarea>
+          </label>
+          <button class="think-button is-hidden" id="editCustomFromUsageButton" type="button">编辑自定义卡面</button>
+          <p class="custom-message" id="usageMessage"></p>
+        </div>
+      </section>
+
+      <section class="collection-section collection-page is-hidden" id="collectionPage">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">COLLECTOR</span>
+            <h2>小猪收藏家</h2>
+          </div>
+          <div class="collection-actions">
+            <strong id="collectionCount">0 / 0</strong>
+            <button class="round-icon small" id="closeCollectionButton" type="button" aria-label="返回">×</button>
+          </div>
+        </div>
+        <div class="collection-grid" id="collectionGrid"></div>
+      </section>
+
+      <section class="custom-editor is-hidden" id="customEditor" aria-label="自定义卡片编辑">
+        <div class="custom-editor-panel">
+          <div class="section-title compact">
+            <div>
+              <span class="eyebrow">CUSTOM CARD</span>
+              <h2 id="customEditorTitle">编辑自定义卡</h2>
+            </div>
+            <button class="round-icon small" id="closeEditorButton" type="button" aria-label="关闭">×</button>
+          </div>
+          <label>
+            卡面标题
+            <input id="customTitleInput" maxlength="60" placeholder="比如：小猪专属愿望卡">
+          </label>
+          <label>
+            卡面内容
+            <textarea id="customTextInput" maxlength="500" rows="5" placeholder="写下这张卡要变成什么，可以是愿望、约定、任务，或者一句只有你们懂的话。"></textarea>
+          </label>
+          <div class="custom-actions">
+            <button class="think-button" id="thinkButton" type="button">想一想</button>
+            <button class="save-custom-button" id="saveCustomButton" type="button">保存卡面</button>
+          </div>
+          <p class="custom-message" id="customMessage">保存后我这边也会同步看到。</p>
+        </div>
+      </section>
+
+      <section class="card-detail is-hidden" id="cardDetail" aria-label="卡片详情">
+        <div class="card-detail-panel">
+          <button class="round-icon small detail-close" id="closeDetailButton" type="button" aria-label="关闭">×</button>
+          <article class="detail-card" id="detailCard">
+            <span class="card-rarity" id="detailRarity">A</span>
+            <h2 id="detailTitle">卡片标题</h2>
+            <p id="detailText">卡片内容</p>
+            <strong id="detailAction">今日兑换</strong>
+          </article>
+          <div class="usage-panel detail-usage" id="detailUsagePanel">
+            <div class="usage-head">
+              <div>
+                <span class="eyebrow">CARD MEMORY</span>
+                <h2>这张卡的使用记录</h2>
+              </div>
+              <button class="use-card-button" id="detailUseCardButton" type="button">使用这张卡</button>
+            </div>
+            <p class="used-time" id="detailUsedTimeText"></p>
+            <label class="memory-field is-hidden" id="detailMemoryField">
+              使用后的回忆
+              <textarea id="detailMemoryInput" maxlength="600" rows="4" placeholder="比如这张卡什么时候用掉了、发生了什么、感觉怎么样。"></textarea>
+            </label>
+            <button class="think-button is-hidden" id="detailEditCustomButton" type="button">编辑自定义卡面</button>
+            <p class="custom-message" id="detailUsageMessage"></p>
+          </div>
+        </div>
+      </section>
+
+      <p class="creator-signature">created by 王锐</p>
+    </main>
+  </body>
+</html>
