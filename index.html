@@ -1,0 +1,2275 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f7c9ce">
+    <title>小猪的每日抽卡</title>
+    <style>
+:root {
+  --ink: #30263f;
+  --muted: #7d6471;
+  --paper: #fff8f0;
+  --rose: #ff8fa8;
+  --coral: #f46f6f;
+  --gold: #ffd57a;
+  --mint: #87d9c8;
+  --blue: #5f8bc4;
+  --shadow: 0 22px 52px rgba(91, 55, 73, 0.22);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 14% 10%, rgba(255, 213, 122, 0.48), transparent 24%),
+    radial-gradient(circle at 88% 18%, rgba(135, 217, 200, 0.28), transparent 22%),
+    linear-gradient(155deg, #fff4ed 0%, #ffd5d5 38%, #b6d5ee 100%);
+  font-family:
+    "SF Pro Display",
+    "PingFang SC",
+    "Microsoft YaHei",
+    system-ui,
+    sans-serif;
+}
+
+body {
+  min-height: 100svh;
+}
+
+button {
+  border: 0;
+  color: inherit;
+  font: inherit;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 1px solid rgba(161, 83, 105, 0.18);
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.62);
+  font: inherit;
+  outline: none;
+}
+
+input {
+  min-height: 44px;
+  padding: 0 12px;
+}
+
+textarea {
+  padding: 12px;
+  resize: vertical;
+}
+
+.phone-shell {
+  width: min(100%, 520px);
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: max(18px, env(safe-area-inset-top)) 18px max(24px, env(safe-area-inset-bottom));
+}
+
+.hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 12px;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 8px;
+  color: #a15369;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  max-width: none;
+  color: #392848;
+  font-family:
+    "YouYuan",
+    "Microsoft YaHei UI",
+    "Comic Sans MS",
+    "PingFang SC",
+    system-ui,
+    sans-serif;
+  font-size: clamp(1.85rem, 7vw, 2.65rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.hero-copy p {
+  max-width: 20rem;
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+.round-icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 248, 240, 0.72);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.64), 0 14px 30px rgba(91, 55, 73, 0.16);
+}
+
+.round-icon.small {
+  width: 36px;
+  height: 36px;
+  font-size: 1.1rem;
+}
+
+.countdown-panel {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-top: 26px;
+  padding: 16px;
+  border-radius: 8px;
+  background: rgba(255, 248, 240, 0.76);
+  box-shadow: var(--shadow);
+}
+
+.countdown-panel span {
+  color: #5a324b;
+  font-size: clamp(1.02rem, 4.5vw, 1.28rem);
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.countdown-panel strong {
+  justify-self: end;
+  color: #56304c;
+  font-size: clamp(1rem, 5vw, 1.35rem);
+  letter-spacing: 0;
+}
+
+.starter-gift {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.starter-gift[hidden] {
+  display: none;
+}
+
+.starter-gift-body {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  animation: giftFloat 2.4s ease-in-out infinite;
+}
+
+.starter-gift-box {
+  position: relative;
+  display: block;
+  width: 46px;
+  height: 34px;
+  border-radius: 6px;
+  background: linear-gradient(160deg, #ffb8c8 0%, #ff8fa8 55%, #f46f6f 100%);
+  box-shadow:
+    inset 0 -6px 0 rgba(180, 62, 88, 0.18),
+    0 10px 22px rgba(244, 111, 111, 0.28);
+}
+
+.starter-gift-box::before,
+.starter-gift-box::after {
+  position: absolute;
+  top: 18px;
+  width: 8px;
+  height: 100%;
+  border-radius: 4px;
+  background: rgba(255, 248, 240, 0.55);
+  content: "";
+}
+
+.starter-gift-box::before {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.starter-gift-box::after {
+  left: 50%;
+  width: 100%;
+  height: 8px;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.starter-gift-lid {
+  position: absolute;
+  top: 4px;
+  z-index: 1;
+  width: 50px;
+  height: 14px;
+  border-radius: 6px 6px 4px 4px;
+  background: linear-gradient(180deg, #ffe9a8, #ffd57a);
+  box-shadow: 0 4px 10px rgba(255, 213, 122, 0.35);
+  transform-origin: center bottom;
+  animation: giftLidWiggle 2.4s ease-in-out infinite;
+}
+
+.starter-gift-bow {
+  position: absolute;
+  top: -2px;
+  z-index: 2;
+  width: 22px;
+  height: 14px;
+  border-radius: 999px;
+  background: #ffd57a;
+  box-shadow:
+    -12px 0 0 -4px #ff8fa8,
+    12px 0 0 -4px #ff8fa8;
+}
+
+.starter-gift-bow::after {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f46f6f;
+  transform: translateX(-50%);
+  content: "";
+}
+
+.starter-gift-label {
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: #7a3f55;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  background: rgba(255, 248, 240, 0.88);
+  box-shadow: inset 0 0 0 1px rgba(255, 143, 168, 0.28), 0 8px 18px rgba(91, 55, 73, 0.12);
+}
+
+.starter-gift-spark {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffd57a;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.starter-gift-spark-a {
+  top: 6px;
+  right: 2px;
+  animation: giftSpark 2.2s ease-in-out infinite;
+}
+
+.starter-gift-spark-b {
+  top: 22px;
+  left: 0;
+  background: #87d9c8;
+  animation: giftSpark 2.2s ease-in-out infinite 0.8s;
+}
+
+.starter-gift:active:not(.is-claiming) .starter-gift-body {
+  animation: giftTap 280ms ease;
+}
+
+.starter-gift.is-claiming .starter-gift-body {
+  animation: giftClaimPop 520ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+}
+
+.starter-gift.is-claiming .starter-gift-spark-a,
+.starter-gift.is-claiming .starter-gift-spark-b {
+  animation: giftBurst 520ms ease-out forwards;
+}
+
+.starter-gift.is-claiming .starter-gift-label {
+  animation: giftLabelFade 420ms ease forwards;
+}
+
+@keyframes giftFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes giftLidWiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(-4deg);
+  }
+
+  75% {
+    transform: rotate(4deg);
+  }
+}
+
+@keyframes giftSpark {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  45% {
+    opacity: 0.95;
+    transform: scale(1);
+  }
+}
+
+@keyframes giftTap {
+  0% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(0.88);
+  }
+
+  100% {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes giftClaimPop {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  35% {
+    transform: scale(1.18) rotate(-6deg);
+  }
+
+  100% {
+    transform: scale(0.2) rotate(12deg);
+    opacity: 0;
+  }
+}
+
+@keyframes giftBurst {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(2.8) translateY(-18px);
+  }
+}
+
+@keyframes giftLabelFade {
+  to {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.draw-stage {
+  position: relative;
+  margin-top: 18px;
+  padding: 22px 16px 18px;
+  overflow: hidden;
+  border-radius: 8px;
+  background:
+    linear-gradient(150deg, rgba(255, 248, 240, 0.82), rgba(255, 226, 217, 0.68)),
+    rgba(255, 248, 240, 0.72);
+  box-shadow: var(--shadow);
+}
+
+.decor {
+  position: absolute;
+  z-index: 0;
+  color: rgba(161, 83, 105, 0.18);
+  font-weight: 900;
+  pointer-events: none;
+}
+
+.decor-star {
+  top: 14px;
+  right: 18px;
+  font-size: 3.5rem;
+}
+
+.decor-note {
+  bottom: 18px;
+  left: 18px;
+  color: rgba(95, 139, 196, 0.34);
+  font-size: 0.82rem;
+}
+
+.stage-charm {
+  position: absolute;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.stage-charm-star {
+  top: 18px;
+  right: 22px;
+  width: 44px;
+  height: 44px;
+  color: rgba(161, 83, 105, 0.34);
+  transform: rotate(10deg);
+}
+
+.stage-charm-star::before {
+  font-size: 2.1rem;
+  line-height: 1;
+  text-shadow: 0 8px 18px rgba(161, 83, 105, 0.12);
+  content: "✦";
+}
+
+.stage-charm-heart {
+  left: 22px;
+  bottom: 74px;
+  width: 42px;
+  height: 32px;
+  color: rgba(244, 111, 111, 0.32);
+  transform: rotate(-12deg);
+}
+
+.stage-charm-heart::before {
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(255, 248, 240, 0.42);
+  box-shadow: inset 0 0 0 1px rgba(244, 111, 111, 0.14);
+  font-size: 1rem;
+  line-height: 1;
+  content: "♡";
+}
+
+.card-wrap {
+  position: relative;
+  z-index: 1;
+  width: min(78vw, 292px);
+  aspect-ratio: 0.68;
+  margin: 0 auto 22px;
+  perspective: 1100px;
+}
+
+.draw-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 720ms cubic-bezier(0.2, 0.72, 0.18, 1);
+}
+
+.draw-card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.draw-card.is-drawing {
+  animation: drawPulse 920ms ease-in-out;
+}
+
+@keyframes drawPulse {
+  0%,
+  100% {
+    transform: translateY(0) rotateY(0deg);
+  }
+
+  34% {
+    transform: translateY(-18px) rotateZ(-3deg);
+  }
+
+  68% {
+    transform: translateY(-8px) rotateZ(4deg);
+  }
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+  overflow: hidden;
+  border-radius: 18px;
+  backface-visibility: hidden;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.74), transparent 28%),
+    linear-gradient(150deg, var(--paper), #ffe2d9);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.72),
+    0 24px 46px rgba(91, 55, 73, 0.24);
+}
+
+.draw-card.tier-a .card-back {
+  background:
+    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.76), transparent 28%),
+    linear-gradient(150deg, #f2fff8, #8fc9b6 48%, #3f876f);
+}
+
+.draw-card.tier-s .card-back {
+  background:
+    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.76), transparent 28%),
+    linear-gradient(150deg, #ffffff, #e7eaf0 46%, #cfd5df);
+}
+
+.draw-card.tier-sr .card-back {
+  background:
+    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.8), transparent 28%),
+    linear-gradient(150deg, #fff8dc, #f3bd35 50%, #c7871f);
+}
+
+.draw-card.tier-ssr .card-back {
+  background:
+    radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.96), transparent 30%),
+    linear-gradient(135deg, #ffffff, #b8f2ff 28%, #e8dcff 58%, #fff2ad 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.86),
+    0 26px 58px rgba(62, 126, 172, 0.32),
+    0 0 42px rgba(184, 242, 255, 0.38);
+}
+
+.draw-card.tier-ssr .card-back h2,
+.draw-card.tier-ssr .card-back strong {
+  color: #153a5a;
+}
+
+.draw-card.tier-ssr .card-back p {
+  color: rgba(22, 51, 71, 0.76);
+}
+
+.card-face::before {
+  position: absolute;
+  right: -32px;
+  bottom: -34px;
+  width: 118px;
+  height: 118px;
+  border-radius: 50%;
+  background: var(--accent, var(--rose));
+  opacity: 0.24;
+  content: "";
+}
+
+.card-front {
+  text-align: left;
+}
+
+.card-front h2,
+.card-back h2 {
+  position: relative;
+  z-index: 1;
+  color: #402848;
+  font-size: clamp(1.8rem, 8vw, 2.6rem);
+  line-height: 1.08;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+.card-front p,
+.card-back p {
+  position: relative;
+  z-index: 1;
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+.card-rarity {
+  position: relative;
+  z-index: 1;
+  align-self: flex-start;
+  padding: 7px 12px;
+  color: #4c3548;
+  font-size: 0.74rem;
+  font-weight: 900;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+#cardAction {
+  position: relative;
+  z-index: 1;
+  display: block;
+  color: #a15369;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+
+.draw-button {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 320px);
+  min-height: 56px;
+  margin: 0 auto;
+  border-radius: 999px;
+  color: #fff8f0;
+  font-weight: 900;
+  background: linear-gradient(135deg, #f46f6f, #ff8fa8 58%, #5f8bc4);
+  box-shadow: 0 18px 32px rgba(161, 83, 105, 0.28);
+  transition: transform 160ms ease, filter 160ms ease;
+}
+
+.draw-button:active,
+.round-icon:active {
+  transform: scale(0.97);
+}
+
+.draw-button:disabled {
+  filter: saturate(0.58);
+  opacity: 0.72;
+}
+
+.reset-copy {
+  position: relative;
+  z-index: 1;
+  margin-top: 13px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.collection-entry {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: min(100%, 320px);
+  min-height: 52px;
+  margin: 16px auto 0;
+  padding: 0 16px 0 20px;
+  border-radius: 999px;
+  color: #4c3548;
+  font-weight: 900;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 213, 122, 0.4)),
+    rgba(255, 248, 240, 0.7);
+  box-shadow: 0 16px 28px rgba(91, 55, 73, 0.16), inset 0 0 0 1px rgba(255, 255, 255, 0.58);
+  overflow: hidden;
+  transition: transform 160ms ease, filter 160ms ease, box-shadow 160ms ease;
+}
+
+.collection-entry strong {
+  color: #a15369;
+  font-size: 0.9rem;
+}
+
+.collection-entry::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  opacity: 0;
+  transform: translateX(-70%);
+  content: "";
+  pointer-events: none;
+}
+
+.collection-entry:active {
+  transform: translateY(2px) scale(0.98);
+  filter: saturate(1.08);
+  box-shadow: 0 10px 20px rgba(91, 55, 73, 0.14), inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+.collection-entry:active::after {
+  opacity: 1;
+  transform: translateX(70%);
+  transition: transform 280ms ease, opacity 160ms ease;
+}
+
+.usage-panel {
+  position: relative;
+  z-index: 1;
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 8px;
+  background: rgba(255, 248, 240, 0.66);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.48);
+}
+
+.usage-panel.is-hidden,
+.memory-field.is-hidden,
+.think-button.is-hidden {
+  display: none;
+}
+
+.usage-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.usage-head h2 {
+  color: #392848;
+  font-size: 1.05rem;
+}
+
+.use-card-button {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  color: #fff8f0;
+  font-size: 0.88rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #f46f6f, #ff8fa8 58%, #5f8bc4);
+}
+
+.use-card-button:disabled {
+  color: #5f4b58;
+  background: rgba(125, 100, 113, 0.16);
+}
+
+.used-time {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.memory-field {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+#editCustomFromUsageButton {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.collection-section {
+  margin-top: 22px;
+  padding-bottom: 10px;
+}
+
+.collection-page {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  width: min(100%, 520px);
+  margin: 0 auto;
+  overflow: auto;
+  padding: max(18px, env(safe-area-inset-top)) 18px max(24px, env(safe-area-inset-bottom));
+  background:
+    radial-gradient(circle at 14% 10%, rgba(255, 213, 122, 0.48), transparent 24%),
+    radial-gradient(circle at 88% 18%, rgba(135, 217, 200, 0.28), transparent 22%),
+    linear-gradient(155deg, #fff4ed 0%, #ffd5d5 38%, #b6d5ee 100%);
+  animation: collectionIn 180ms ease-out both;
+}
+
+.collection-page.is-hidden {
+  display: none;
+}
+
+@keyframes collectionIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-title {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.section-title h2 {
+  color: #392848;
+  font-size: 1.35rem;
+}
+
+.section-title strong {
+  color: #a15369;
+  font-size: 0.92rem;
+}
+
+.collection-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.mini-card {
+  min-height: 122px;
+  padding: 12px;
+  border-radius: 8px;
+  background:
+    linear-gradient(150deg, rgba(255, 248, 240, 0.86), rgba(255, 236, 222, 0.72)),
+    var(--paper);
+  box-shadow: 0 16px 32px rgba(91, 55, 73, 0.16);
+  transition: transform 160ms ease, filter 160ms ease;
+}
+
+.mini-card.tier-ssr {
+  position: relative;
+  overflow: hidden;
+  color: #163347;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(184, 242, 255, 0.84) 34%, rgba(230, 214, 255, 0.92) 68%, rgba(255, 245, 184, 0.82)),
+    rgba(230, 250, 255, 0.86);
+  box-shadow:
+    0 18px 38px rgba(62, 126, 172, 0.26),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.78),
+    inset 0 0 26px rgba(255, 255, 255, 0.46);
+}
+
+.mini-card.tier-s {
+  color: #323844;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(232, 235, 242, 0.88) 46%, rgba(203, 210, 222, 0.76)),
+    rgba(245, 246, 249, 0.9);
+  box-shadow:
+    0 16px 32px rgba(89, 99, 116, 0.18),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.74);
+}
+
+.mini-card.tier-s span {
+  color: #303746;
+  background: linear-gradient(135deg, #ffffff, #d6dce8 62%, #b9c1cf);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.66);
+}
+
+.mini-card.tier-sr {
+  color: #3f2a12;
+  background:
+    linear-gradient(145deg, rgba(255, 248, 220, 0.96), rgba(243, 189, 53, 0.64) 48%, rgba(199, 135, 31, 0.5)),
+    rgba(255, 244, 203, 0.9);
+  box-shadow:
+    0 16px 34px rgba(160, 104, 24, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.68);
+}
+
+.mini-card.tier-sr span {
+  color: #4f310d;
+  background: linear-gradient(135deg, #fff6cf, #f3bd35 62%, #c7871f);
+  box-shadow: 0 0 16px rgba(243, 189, 53, 0.42);
+}
+
+.mini-card.tier-a {
+  color: #173a32;
+  background:
+    linear-gradient(145deg, rgba(237, 255, 248, 0.92), rgba(122, 185, 165, 0.66) 48%, rgba(63, 135, 111, 0.56)),
+    rgba(231, 250, 243, 0.9);
+  box-shadow:
+    0 16px 32px rgba(43, 101, 84, 0.18),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.62);
+}
+
+.mini-card.tier-a span {
+  color: #11392f;
+  background: linear-gradient(135deg, #dff8ef, #74b79e 56%, #3f876f);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.42);
+}
+
+.mini-card.tier-ssr::before {
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(from 90deg, transparent, rgba(255, 255, 255, 0.75), rgba(135, 217, 255, 0.55), rgba(255, 143, 168, 0.44), transparent);
+  opacity: 0.62;
+  animation: diamondSpin 6s linear infinite;
+  content: "";
+}
+
+.mini-card.tier-ssr > * {
+  position: relative;
+  z-index: 1;
+}
+
+.mini-card.tier-ssr span {
+  color: #17364f;
+  background: linear-gradient(135deg, #ffffff, #a9f1ff 42%, #f6dcff 78%, #fff4a8);
+  box-shadow: 0 0 18px rgba(169, 241, 255, 0.55);
+}
+
+.mini-card.tier-ssr h3 {
+  color: #18314b;
+}
+
+.mini-card.tier-ssr p {
+  color: rgba(24, 49, 75, 0.72);
+}
+
+@keyframes diamondSpin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.mini-card.is-collected:active {
+  transform: scale(0.98);
+}
+
+.mini-card.is-locked {
+  color: rgba(48, 38, 63, 0.52);
+  background:
+    linear-gradient(150deg, color-mix(in srgb, var(--accent, #d7cbd2) 18%, rgba(255, 248, 240, 0.72)), rgba(228, 217, 223, 0.56)),
+    rgba(255, 248, 240, 0.58);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.38);
+}
+
+.mini-card span {
+  display: inline-flex;
+  margin-bottom: 12px;
+  padding: 5px 9px;
+  color: #4c3548;
+  font-size: 0.68rem;
+  font-weight: 900;
+  border-radius: 999px;
+  background: var(--accent, #ffd57a);
+}
+
+.mini-card h3 {
+  margin: 0 0 8px;
+  color: #392848;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.mini-card p {
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.mini-card.is-locked span {
+  color: rgba(48, 38, 63, 0.45);
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.mini-card.is-locked h3,
+.mini-card.is-locked p {
+  color: rgba(48, 38, 63, 0.48);
+}
+
+.custom-editor {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  align-items: end;
+  padding: 18px;
+  background: rgba(48, 38, 63, 0.36);
+}
+
+.custom-editor.is-hidden {
+  display: none;
+}
+
+.card-detail {
+  position: fixed;
+  inset: 0;
+  z-index: 12;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(48, 38, 63, 0.42);
+}
+
+.creator-signature {
+  margin: 20px 0 2px;
+  color: rgba(57, 40, 72, 0.54);
+  font-family:
+    "Impact",
+    "Arial Black",
+    "Microsoft YaHei UI",
+    system-ui,
+    sans-serif;
+  font-size: 0.82rem;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.card-detail.is-hidden {
+  display: none;
+}
+
+.card-detail-panel {
+  position: relative;
+  width: min(100%, 430px);
+  max-height: calc(100svh - 36px);
+  overflow: auto;
+  padding: 18px;
+  border-radius: 12px;
+  background:
+    linear-gradient(150deg, rgba(255, 248, 240, 0.98), rgba(255, 232, 222, 0.96)),
+    var(--paper);
+  box-shadow: 0 30px 90px rgba(48, 38, 63, 0.36);
+  animation: popCard 220ms ease-out both;
+}
+
+@keyframes popCard {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.detail-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+}
+
+.detail-card {
+  display: grid;
+  gap: 18px;
+  min-height: 360px;
+  padding: 24px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.74), transparent 28%),
+    linear-gradient(150deg, var(--paper), color-mix(in srgb, var(--accent, var(--rose)) 20%, #ffe2d9));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.72),
+    0 24px 46px rgba(91, 55, 73, 0.22);
+}
+
+.detail-card.tier-ssr {
+  color: #163347;
+  background:
+    radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.95), transparent 30%),
+    linear-gradient(135deg, #ffffff, #b8f2ff 28%, #e8dcff 58%, #fff2ad 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.86),
+    0 26px 58px rgba(62, 126, 172, 0.32),
+    0 0 42px rgba(184, 242, 255, 0.38);
+}
+
+.detail-card.tier-ssr h2,
+.detail-card.tier-ssr strong {
+  color: #153a5a;
+}
+
+.detail-card.tier-ssr p {
+  color: rgba(22, 51, 71, 0.76);
+}
+
+.detail-card h2 {
+  align-self: end;
+  color: #402848;
+  font-size: clamp(2rem, 10vw, 3rem);
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.detail-card p {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.detail-card strong {
+  color: #a15369;
+  line-height: 1.5;
+}
+
+.detail-usage {
+  margin-top: 14px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.custom-editor-panel {
+  width: min(100%, 520px);
+  margin: 0 auto;
+  padding: 18px;
+  border-radius: 12px 12px 8px 8px;
+  background:
+    linear-gradient(150deg, rgba(255, 248, 240, 0.98), rgba(255, 232, 222, 0.96)),
+    var(--paper);
+  box-shadow: 0 30px 80px rgba(48, 38, 63, 0.32);
+}
+
+.section-title.compact {
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.custom-editor label {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.custom-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.think-button,
+.save-custom-button {
+  min-height: 46px;
+  border-radius: 999px;
+  font-weight: 900;
+}
+
+.think-button {
+  background: rgba(125, 100, 113, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(125, 100, 113, 0.18);
+}
+
+.save-custom-button {
+  color: #fff8f0;
+  background: linear-gradient(135deg, #f46f6f, #ff8fa8 58%, #5f8bc4);
+}
+
+.custom-message {
+  min-height: 1.45em;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 360px) {
+  .phone-shell {
+    padding-inline: 14px;
+  }
+
+  .countdown-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .countdown-panel strong {
+    justify-self: start;
+  }
+
+  .collection-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 720px) {
+  body {
+    display: grid;
+    place-items: center;
+    padding: 32px 0;
+  }
+
+  .phone-shell {
+    min-height: auto;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.26);
+    box-shadow: 0 26px 80px rgba(80, 47, 70, 0.24);
+  }
+}
+
+</style>
+  </head>
+  <body>
+    <main class="phone-shell">
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">DAILY CARD</span>
+          <h1>小猪的今日抽卡</h1>
+          <p id="statusLine">正在准备今天的惊喜。</p>
+        </div>
+        <button class="round-icon" id="refreshButton" type="button" aria-label="刷新">
+          <span aria-hidden="true">↻</span>
+        </button>
+      </section>
+
+      <section class="countdown-panel" aria-label="到8月15号的倒计时">
+        <span>距离见面（8月15日）还有</span>
+        <strong id="countdownText">-- 天 --:--:--</strong>
+      </section>
+
+      <section class="draw-stage">
+        <button class="starter-gift" id="starterGift" type="button" hidden aria-label="领取抽卡体验礼包">
+          <span class="starter-gift-spark starter-gift-spark-a" aria-hidden="true"></span>
+          <span class="starter-gift-spark starter-gift-spark-b" aria-hidden="true"></span>
+          <span class="starter-gift-body" aria-hidden="true">
+            <span class="starter-gift-lid"></span>
+            <span class="starter-gift-box"></span>
+            <span class="starter-gift-bow"></span>
+          </span>
+          <span class="starter-gift-label">体验礼包</span>
+        </button>
+        <span class="stage-charm stage-charm-star" aria-hidden="true"></span>
+        <span class="stage-charm stage-charm-heart" aria-hidden="true"></span>
+        <div class="card-wrap" id="cardWrap" aria-live="polite">
+          <article class="draw-card" id="drawCard">
+            <div class="card-face card-front">
+              <span class="card-rarity" id="frontRarity">小猪专属</span>
+              <h2 id="frontText">今天会抽到什么呢</h2>
+              <p>点击下方按钮，看看今天的喜欢长什么样吧~</p>
+            </div>
+            <div class="card-face card-back">
+              <span class="card-rarity" id="cardRarity">温柔</span>
+              <h2 id="cardTitle">等待抽卡</h2>
+              <p id="cardText">卡片会在这里翻开。</p>
+              <strong id="cardAction">今日兑换</strong>
+            </div>
+          </article>
+        </div>
+
+        <button class="draw-button" id="drawButton" type="button">
+          <span>抽取今日卡片</span>
+        </button>
+        <p class="reset-copy" id="resetCopy">每天早上 7 点会刷新一次。</p>
+
+        <button class="collection-entry" id="openCollectionButton" type="button">
+          <span>收藏夹</span>
+          <strong id="collectionEntryCount">0 / 90</strong>
+        </button>
+
+        <div class="usage-panel is-hidden" id="usagePanel">
+          <div class="usage-head">
+            <div>
+              <span class="eyebrow">CARD MEMORY</span>
+              <h2>这张卡的使用记录</h2>
+            </div>
+            <button class="use-card-button" id="useCardButton" type="button">使用这张卡</button>
+          </div>
+          <p class="used-time" id="usedTimeText"></p>
+          <label class="memory-field is-hidden" id="memoryField">
+            使用后的回忆
+            <textarea id="memoryInput" maxlength="600" rows="4" placeholder="比如这张卡什么时候用掉了、发生了什么、感觉怎么样。"></textarea>
+          </label>
+          <button class="think-button is-hidden" id="editCustomFromUsageButton" type="button">编辑自定义卡面</button>
+          <p class="custom-message" id="usageMessage"></p>
+        </div>
+      </section>
+
+      <section class="collection-section collection-page is-hidden" id="collectionPage">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">COLLECTOR</span>
+            <h2>小猪收藏家</h2>
+          </div>
+          <div class="collection-actions">
+            <strong id="collectionCount">0 / 0</strong>
+            <button class="round-icon small" id="closeCollectionButton" type="button" aria-label="返回">×</button>
+          </div>
+        </div>
+        <div class="collection-grid" id="collectionGrid"></div>
+      </section>
+
+      <section class="custom-editor is-hidden" id="customEditor" aria-label="自定义卡片编辑">
+        <div class="custom-editor-panel">
+          <div class="section-title compact">
+            <div>
+              <span class="eyebrow">CUSTOM CARD</span>
+              <h2 id="customEditorTitle">编辑自定义卡</h2>
+            </div>
+            <button class="round-icon small" id="closeEditorButton" type="button" aria-label="关闭">×</button>
+          </div>
+          <label>
+            卡面标题
+            <input id="customTitleInput" maxlength="60" placeholder="比如：小猪专属愿望卡">
+          </label>
+          <label>
+            卡面内容
+            <textarea id="customTextInput" maxlength="500" rows="5" placeholder="写下这张卡要变成什么，可以是愿望、约定、任务，或者一句只有你们懂的话。"></textarea>
+          </label>
+          <div class="custom-actions">
+            <button class="think-button" id="thinkButton" type="button">想一想</button>
+            <button class="save-custom-button" id="saveCustomButton" type="button">保存卡面</button>
+          </div>
+          <p class="custom-message" id="customMessage">保存后我这边也会同步看到。</p>
+        </div>
+      </section>
+
+      <section class="card-detail is-hidden" id="cardDetail" aria-label="卡片详情">
+        <div class="card-detail-panel">
+          <button class="round-icon small detail-close" id="closeDetailButton" type="button" aria-label="关闭">×</button>
+          <article class="detail-card" id="detailCard">
+            <span class="card-rarity" id="detailRarity">A</span>
+            <h2 id="detailTitle">卡片标题</h2>
+            <p id="detailText">卡片内容</p>
+            <strong id="detailAction">今日兑换</strong>
+          </article>
+          <div class="usage-panel detail-usage" id="detailUsagePanel">
+            <div class="usage-head">
+              <div>
+                <span class="eyebrow">CARD MEMORY</span>
+                <h2>这张卡的使用记录</h2>
+              </div>
+              <button class="use-card-button" id="detailUseCardButton" type="button">使用这张卡</button>
+            </div>
+            <p class="used-time" id="detailUsedTimeText"></p>
+            <label class="memory-field is-hidden" id="detailMemoryField">
+              使用后的回忆
+              <textarea id="detailMemoryInput" maxlength="600" rows="4" placeholder="比如这张卡什么时候用掉了、发生了什么、感觉怎么样。"></textarea>
+            </label>
+            <button class="think-button is-hidden" id="detailEditCustomButton" type="button">编辑自定义卡面</button>
+            <p class="custom-message" id="detailUsageMessage"></p>
+          </div>
+        </div>
+      </section>
+
+      <p class="creator-signature">created by 王锐</p>
+    </main>
+    <script>
+window.LOVE_STATIC_CARDS = [
+  {
+    "id": "ssr-batch-01",
+    "slot": 1,
+    "title": "【绝对指令权】",
+    "rarityTier": "SSR",
+    "rarity": "SSR",
+    "frontText": "超稀有心动",
+    "backTitle": "绝对指令权",
+    "backText": "今晚锐锐需无条件接受可心的一条指令（限合理范围）！",
+    "actionText": "绝对指令权",
+    "accent": "#c993ff",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "ssr-batch-02",
+    "slot": 2,
+    "title": "【思念的深度提问】",
+    "rarityTier": "SSR",
+    "rarity": "SSR",
+    "frontText": "超稀有心动",
+    "backTitle": "思念的深度提问",
+    "backText": "可心今晚可向锐锐提出两个最私密、最渴望知道的、关于身体的深度问题，锐锐必须切实回答并进行最细节的描述。",
+    "actionText": "思念的深度提问",
+    "accent": "#c993ff",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "ssr-batch-03",
+    "slot": 3,
+    "title": "【未来同居夜】",
+    "rarityTier": "SSR",
+    "rarity": "SSR",
+    "frontText": "超稀有心动",
+    "backTitle": "未来同居夜",
+    "backText": "下次连线，可心可要求锐锐关闭灯光，两人盖上被子，只用私密的“气音”，互相讲述对未来同居生活的三个最大期待。",
+    "actionText": "未来同居夜",
+    "accent": "#c993ff",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "ssr-batch-04",
+    "slot": 4,
+    "title": "【恋爱剧本导演】",
+    "rarityTier": "SSR",
+    "rarity": "SSR",
+    "frontText": "超稀有心动",
+    "backTitle": "恋爱剧本导演",
+    "backText": "可心写一个“小情节”，锐锐必须在有空的时候把它完整演出来（语音/文字/剧情皆可）。",
+    "actionText": "恋爱剧本导演",
+    "accent": "#c993ff",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "s-batch-31",
+    "slot": 31,
+    "title": "【抱抱召唤卡】",
+    "rarityTier": "S",
+    "rarity": "S",
+    "frontText": "今日特别心动",
+    "backTitle": "抱抱召唤卡",
+    "backText": "可心随时说一声，锐锐就给可心一个抱抱（或语音版抱抱）。",
+    "actionText": "抱抱召唤卡",
+    "accent": "#7ea7ff",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "s-batch-32",
+    "slot": 32,
+    "title": "【指定夸夸卡】",
+    "rarityTier": "S",
+    "rarity": "S",
+    "frontText": "今日特别心动",
+    "backTitle": "指定夸夸卡",
+    "backText": "可心可以要求锐锐针对某个方面夸可心，锐锐必须夸到可心满意为止。",
+    "actionText": "指定夸夸卡",
+    "accent": "#7ea7ff",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "s-batch-33",
+    "slot": 33,
+    "title": "【甜度升级卡】",
+    "rarityTier": "S",
+    "rarity": "S",
+    "frontText": "今日特别心动",
+    "backTitle": "甜度升级卡",
+    "backText": "今天可心可以要求锐锐说一句平时不好意思说的情话。",
+    "actionText": "甜度升级卡",
+    "accent": "#7ea7ff",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "s-batch-34",
+    "slot": 34,
+    "title": "【小任性保护卡】",
+    "rarityTier": "S",
+    "rarity": "S",
+    "frontText": "今日特别心动",
+    "backTitle": "小任性保护卡",
+    "backText": "今天可心可以任性一次，锐锐必须无条件接住（小事范围）。",
+    "actionText": "小任性保护卡",
+    "accent": "#7ea7ff",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "s-batch-35",
+    "slot": 35,
+    "title": "【今日愿望许可卡】",
+    "rarityTier": "S",
+    "rarity": "S",
+    "frontText": "今日特别心动",
+    "backTitle": "今日愿望许可卡",
+    "backText": "可心可以提一个小愿望，锐锐需要在今天完成。",
+    "actionText": "今日愿望许可卡",
+    "accent": "#7ea7ff",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "s-batch-36",
+    "slot": 36,
+    "title": "【随机甜蜜任务卡】",
+    "rarityTier": "S",
+    "rarity": "S",
+    "frontText": "今日特别心动",
+    "backTitle": "随机甜蜜任务卡",
+    "backText": "可心今天可以让锐锐为可心做一件“超小但超暖心”的事，由可心指定。",
+    "actionText": "随机甜蜜任务卡",
+    "accent": "#7ea7ff",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "s-batch-37",
+    "slot": 37,
+    "title": "【生活建议卡】",
+    "rarityTier": "S",
+    "rarity": "S",
+    "frontText": "今日特别心动",
+    "backTitle": "生活建议卡",
+    "backText": "可心问任何小问题，锐锐必须认真给出一个靠谱建议。",
+    "actionText": "生活建议卡",
+    "accent": "#7ea7ff",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "s-batch-38",
+    "slot": 38,
+    "title": "【好消息速递卡】",
+    "rarityTier": "S",
+    "rarity": "S",
+    "frontText": "今日特别心动",
+    "backTitle": "好消息速递卡",
+    "backText": "今天锐锐必须给可心传递一件真实的小好消息。",
+    "actionText": "好消息速递卡",
+    "accent": "#7ea7ff",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "s-batch-39",
+    "slot": 39,
+    "title": "【今日小幸运卡】",
+    "rarityTier": "S",
+    "rarity": "S",
+    "frontText": "今日特别心动",
+    "backTitle": "今日小幸运卡",
+    "backText": "锐锐必须给可心说一件可心今天会遇到的小幸运（预言型）。",
+    "actionText": "今日小幸运卡",
+    "accent": "#7ea7ff",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "a-batch-56",
+    "slot": 56,
+    "title": "【小小命令卡】",
+    "rarityTier": "A",
+    "rarity": "A",
+    "frontText": "今日小心动",
+    "backTitle": "小小命令卡",
+    "backText": "可心可以命令锐锐立刻做一件非常小的事情，比如“喝水”“拍猫猫手势”。",
+    "actionText": "小小命令卡",
+    "accent": "#8ee6ce",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "a-batch-57",
+    "slot": 57,
+    "title": "【情绪天线卡】",
+    "rarityTier": "A",
+    "rarity": "A",
+    "frontText": "今日小心动",
+    "backTitle": "情绪天线卡",
+    "backText": "可心今天说一句“锐锐有点情绪”，锐锐必须马上切换成陪伴模式。",
+    "actionText": "情绪天线卡",
+    "accent": "#8ee6ce",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "a-batch-58",
+    "slot": 58,
+    "title": "【语音选手卡】",
+    "rarityTier": "A",
+    "rarity": "A",
+    "frontText": "今日小心动",
+    "backTitle": "语音选手卡",
+    "backText": "可心可以要求锐锐发一条可心指定风格的语音（可爱/低沉/搞怪）。",
+    "actionText": "语音选手卡",
+    "accent": "#8ee6ce",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "a-batch-59",
+    "slot": 59,
+    "title": "【表情包投喂卡】",
+    "rarityTier": "A",
+    "rarity": "A",
+    "frontText": "今日小心动",
+    "backTitle": "表情包投喂卡",
+    "backText": "可心可以随时喊，锐锐要立刻给可心投喂一波表情包。",
+    "actionText": "表情包投喂卡",
+    "accent": "#8ee6ce",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "a-batch-60",
+    "slot": 60,
+    "title": "【情感电量补给卡】",
+    "rarityTier": "A",
+    "rarity": "A",
+    "frontText": "今日小心动",
+    "backTitle": "情感电量补给卡",
+    "backText": "可心说缺电，锐锐必须立刻补给一句动力话。",
+    "actionText": "情感电量补给卡",
+    "accent": "#8ee6ce",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "a-batch-61",
+    "slot": 61,
+    "title": "【照片召唤卡】",
+    "rarityTier": "A",
+    "rarity": "A",
+    "frontText": "今日小心动",
+    "backTitle": "照片召唤卡",
+    "backText": "可心可以要求锐锐拍一张当下的小照片（场景随缘）。",
+    "actionText": "照片召唤卡",
+    "accent": "#8ee6ce",
+    "isCustom": false,
+    "enabled": true
+  },
+  {
+    "id": "a-batch-62",
+    "slot": 62,
+    "title": "【早睡强制令】",
+    "rarityTier": "A",
+    "rarity": "A",
+    "frontText": "今日小心动",
+    "backTitle": "早睡强制令",
+    "backText": "锐锐今日必须在可心指定的时间睡觉，不许熬夜学习！",
+    "actionText": "早睡强制令",
+    "accent": "#8ee6ce",
+    "isCustom": false,
+    "enabled": true
+  }
+];
+
+const CONFIG = {
+  targetDate: new Date("2026-08-15T00:00:00+08:00"),
+  storageKey: "love-card-frontend-only-v1"
+};
+
+const RARITY_META = {
+  A: {
+    weight: 45,
+    rarityLine: "一张轻轻的日常喜欢",
+    accent: "#3f876f"
+  },
+  S: {
+    weight: 25,
+    rarityLine: "今天的喜欢更亮了一点",
+    accent: "#cfd5df"
+  },
+  SR: {
+    weight: 20,
+    rarityLine: "这份喜欢值得认真期待",
+    accent: "#f3bd35"
+  },
+  SSR: {
+    weight: 10,
+    rarityLine: "小猪抽到了最闪的一份偏爱",
+    accent: "#9eeaff"
+  }
+};
+
+const cards = Array.isArray(window.LOVE_STATIC_CARDS)
+  ? window.LOVE_STATIC_CARDS
+      .filter((card) => card && card.enabled !== false)
+      .sort((a, b) => Number(a.slot || 0) - Number(b.slot || 0))
+  : [];
+
+const state = {
+  currentCard: null,
+  detailCard: null,
+  countdownTimer: null,
+  memorySaveTimer: null,
+  detailMemorySaveTimer: null
+};
+
+const els = {
+  statusLine: document.querySelector("#statusLine"),
+  refreshButton: document.querySelector("#refreshButton"),
+  countdownText: document.querySelector("#countdownText"),
+  drawButton: document.querySelector("#drawButton"),
+  resetCopy: document.querySelector("#resetCopy"),
+  cardWrap: document.querySelector("#cardWrap"),
+  drawCard: document.querySelector("#drawCard"),
+  frontRarity: document.querySelector("#frontRarity"),
+  frontText: document.querySelector("#frontText"),
+  cardRarity: document.querySelector("#cardRarity"),
+  cardTitle: document.querySelector("#cardTitle"),
+  cardText: document.querySelector("#cardText"),
+  cardAction: document.querySelector("#cardAction"),
+  collectionGrid: document.querySelector("#collectionGrid"),
+  collectionCount: document.querySelector("#collectionCount"),
+  collectionEntryCount: document.querySelector("#collectionEntryCount"),
+  openCollectionButton: document.querySelector("#openCollectionButton"),
+  closeCollectionButton: document.querySelector("#closeCollectionButton"),
+  collectionPage: document.querySelector("#collectionPage"),
+  usagePanel: document.querySelector("#usagePanel"),
+  useCardButton: document.querySelector("#useCardButton"),
+  usedTimeText: document.querySelector("#usedTimeText"),
+  memoryField: document.querySelector("#memoryField"),
+  memoryInput: document.querySelector("#memoryInput"),
+  editCustomFromUsageButton: document.querySelector("#editCustomFromUsageButton"),
+  usageMessage: document.querySelector("#usageMessage"),
+  customEditor: document.querySelector("#customEditor"),
+  closeEditorButton: document.querySelector("#closeEditorButton"),
+  closeDetailButton: document.querySelector("#closeDetailButton"),
+  cardDetail: document.querySelector("#cardDetail"),
+  detailCard: document.querySelector("#detailCard"),
+  detailRarity: document.querySelector("#detailRarity"),
+  detailTitle: document.querySelector("#detailTitle"),
+  detailText: document.querySelector("#detailText"),
+  detailAction: document.querySelector("#detailAction"),
+  detailUseCardButton: document.querySelector("#detailUseCardButton"),
+  detailUsedTimeText: document.querySelector("#detailUsedTimeText"),
+  detailMemoryField: document.querySelector("#detailMemoryField"),
+  detailMemoryInput: document.querySelector("#detailMemoryInput"),
+  detailEditCustomButton: document.querySelector("#detailEditCustomButton"),
+  detailUsageMessage: document.querySelector("#detailUsageMessage"),
+  starterGift: document.querySelector("#starterGift")
+};
+
+boot();
+
+function boot() {
+  els.drawButton.addEventListener("click", drawCard);
+  els.refreshButton.addEventListener("click", loadState);
+  els.openCollectionButton.addEventListener("click", openCollectionPage);
+  els.closeCollectionButton.addEventListener("click", closeCollectionPage);
+  els.closeDetailButton.addEventListener("click", closeCardDetail);
+  els.cardDetail.addEventListener("click", (event) => {
+    if (event.target === els.cardDetail) {
+      closeCardDetail();
+    }
+  });
+  els.useCardButton.addEventListener("click", markCurrentCardUsed);
+  els.memoryInput.addEventListener("input", queueMemorySave);
+  els.detailUseCardButton.addEventListener("click", markDetailCardUsed);
+  els.detailMemoryInput.addEventListener("input", queueDetailMemorySave);
+  els.closeEditorButton.addEventListener("click", () => {
+    els.customEditor.classList.add("is-hidden");
+  });
+  if (els.starterGift) {
+    els.starterGift.hidden = true;
+  }
+
+  startCountdown();
+  loadState();
+}
+
+function loadState() {
+  renderPublicState(buildPublicState());
+}
+
+async function drawCard() {
+  const publicState = buildPublicState();
+
+  if (publicState.drawEnded) {
+    setEndedState(publicState);
+    return;
+  }
+
+  resetCardFront();
+  els.drawButton.disabled = true;
+  els.drawButton.querySelector("span").textContent = "正在洗牌...";
+  els.drawCard.classList.add("is-drawing");
+
+  await wait(850);
+
+  const pickedCard = pickUncollectedCard();
+  if (!pickedCard) {
+    const endedState = buildPublicState();
+    setEndedState(endedState);
+    els.drawCard.classList.remove("is-drawing");
+    return;
+  }
+
+  const localState = readLocalState();
+  const now = new Date().toISOString();
+  localState.collectionIds.push(pickedCard.id);
+  localState.history.push({
+    cardId: pickedCard.id,
+    drawnAt: now
+  });
+  writeLocalState(localState);
+
+  const hydratedCard = hydrateCard(pickedCard, localState);
+  renderCard(hydratedCard);
+  await wait(120);
+  els.drawCard.classList.remove("is-drawing");
+  els.drawCard.classList.add("is-flipped");
+  const nextPublicState = buildPublicState();
+  renderPublicState(nextPublicState, hydratedCard);
+  setStatus(nextPublicState.drawEnded ? "已经抽卡结束" : "已抽取一份喜欢~");
+}
+
+function buildPublicState() {
+  const localState = readLocalState();
+  const collectedIds = new Set(localState.collectionIds);
+  const collection = localState.collectionIds
+    .map((id) => getCardById(id, localState))
+    .filter(Boolean);
+  const collectionSlots = cards.map((card) => {
+    const collected = collectedIds.has(card.id);
+    return {
+      slot: card.slot,
+      collected,
+      collectedAt: getCollectedAt(card.id, localState),
+      rarityTier: card.rarityTier,
+      accent: getCardAccent(card),
+      isCustom: false,
+      card: collected ? getCardById(card.id, localState) : card
+    };
+  });
+  const remainingCards = cards.length - collection.length;
+
+  return {
+    targetDate: CONFIG.targetDate.toISOString(),
+    collection,
+    collectionSlots,
+    totalCards: cards.length,
+    remainingCards,
+    drawEnded: remainingCards <= 0,
+    canDrawToday: remainingCards > 0
+  };
+}
+
+function renderPublicState(data, justDrawnCard = null) {
+  const countText = `${data.collection.length} / ${data.totalCards}`;
+  els.collectionCount.textContent = countText;
+  els.collectionEntryCount.textContent = countText;
+  renderCollection(data.collectionSlots || []);
+
+  if (justDrawnCard) {
+    renderCard(justDrawnCard);
+    els.drawCard.classList.add("is-flipped");
+  } else if (!state.currentCard) {
+    resetCardFront();
+  }
+
+  if (data.drawEnded) {
+    setEndedState(data);
+    return;
+  }
+
+  els.drawButton.disabled = false;
+  els.drawButton.querySelector("span").textContent = "抽取一张卡片";
+  els.resetCopy.textContent = `还剩 ${data.remainingCards} 张可抽卡，抽完就会显示结束。`;
+  if (!justDrawnCard) {
+    setStatus("还可以继续抽卡哦~");
+  }
+}
+
+function setEndedState(data) {
+  els.drawButton.disabled = true;
+  els.drawButton.querySelector("span").textContent = "已经抽卡结束";
+  els.resetCopy.textContent = "已经抽卡结束";
+  setStatus("已经抽卡结束");
+  if (!state.currentCard) {
+    resetCardFront();
+  }
+}
+
+function pickUncollectedCard() {
+  const localState = readLocalState();
+  const collectedIds = new Set(localState.collectionIds);
+  const pool = cards.filter((card) => !collectedIds.has(card.id));
+  const totalWeight = pool.reduce((sum, card) => sum + getRarityWeight(card), 0);
+  let roll = Math.random() * totalWeight;
+
+  for (const card of pool) {
+    roll -= getRarityWeight(card);
+    if (roll <= 0) {
+      return card;
+    }
+  }
+
+  return pool[pool.length - 1] || null;
+}
+
+function renderCard(card) {
+  if (!card) {
+    resetCardFront();
+    return;
+  }
+
+  state.currentCard = card;
+  const tier = String(card.rarityTier || "A").toLowerCase();
+  els.drawCard.className = `draw-card tier-${tier} ${els.drawCard.classList.contains("is-flipped") ? "is-flipped" : ""}`;
+  els.cardWrap.style.setProperty("--accent", getCardAccent(card));
+  els.frontRarity.textContent = card.frontText || "小猪专属";
+  els.frontText.textContent = card.title || "今日卡片";
+  els.cardRarity.textContent = `${card.rarityName || card.rarityTier || "A"} · ${trimEndingPeriod(card.rarityLine || getRarityLine(card))}`;
+  els.cardTitle.textContent = card.backTitle || card.title || "今天抽到";
+  els.cardText.textContent = card.backText || "这张卡的内容还在路上。";
+  els.cardAction.textContent = card.actionText || "今日兑换";
+  renderUsagePanel(card);
+}
+
+function resetCardFront() {
+  els.drawCard.className = "draw-card";
+  hideUsagePanel();
+  els.cardWrap.style.setProperty("--accent", "#ff8fa8");
+  els.frontRarity.textContent = "小猪专属";
+  els.frontText.textContent = "这次会抽到什么呢";
+  els.cardRarity.textContent = "等待";
+  els.cardTitle.textContent = "等待抽卡";
+  els.cardText.textContent = "卡片会在这里翻开。";
+  els.cardAction.textContent = "本次兑换";
+}
+
+function renderCollection(slots) {
+  els.collectionGrid.innerHTML = "";
+
+  slots.forEach((slot) => {
+    const card = slot.card;
+    const tier = (card?.rarityTier || slot.rarityTier || "").toLowerCase();
+    const item = document.createElement("article");
+    item.className = `mini-card ${slot.collected ? "is-collected" : "is-locked"} ${tier ? `tier-${tier}` : ""}`;
+    item.style.setProperty("--accent", getCardAccent(card || slot));
+    item.innerHTML = `
+      <span>${slot.collected ? escapeHtml(card.rarityName || card.rarityTier || "A") : `${escapeHtml(slot.rarityTier || "?")} · No. ${pad(slot.slot)}`}</span>
+      <h3>${slot.collected ? escapeHtml(card.title || "小猪卡") : "未解锁"}</h3>
+      <p>${slot.collected ? `<b>${escapeHtml(formatCollectedDate(slot.collectedAt))}</b><br>${escapeHtml(collectionSubtitle(card))}` : "等待小猪抽到这张卡。"}</p>
+    `;
+
+    if (slot.collected && card) {
+      item.addEventListener("click", () => openCardDetail(card));
+    }
+
+    els.collectionGrid.appendChild(item);
+  });
+}
+
+function collectionSubtitle(card) {
+  if (card.usage?.usedAt) {
+    return "已经使用，留下了一段回忆。";
+  }
+
+  return card.actionText || card.backTitle || "已经收藏";
+}
+
+function openCollectionPage() {
+  els.collectionPage.classList.remove("is-hidden");
+}
+
+function closeCollectionPage() {
+  els.collectionPage.classList.add("is-hidden");
+}
+
+function openCardDetail(card) {
+  state.detailCard = card;
+  const tier = String(card.rarityTier || "A").toLowerCase();
+  els.detailCard.className = `detail-card tier-${tier}`;
+  els.detailCard.style.setProperty("--accent", getCardAccent(card));
+  els.detailRarity.textContent = `${card.rarityName || card.rarityTier || "A"} · No. ${pad(card.slot)}`;
+  els.detailTitle.textContent = card.backTitle || card.title || "小猪卡";
+  els.detailText.textContent = card.backText || "这张卡的内容还在路上。";
+  els.detailAction.textContent = card.actionText || "今日兑换";
+  renderDetailUsagePanel(card);
+  els.cardDetail.classList.remove("is-hidden");
+}
+
+function closeCardDetail() {
+  window.clearTimeout(state.detailMemorySaveTimer);
+  els.cardDetail.classList.add("is-hidden");
+  state.detailCard = null;
+}
+
+function renderUsagePanel(card) {
+  if (!card?.id) {
+    hideUsagePanel();
+    return;
+  }
+
+  const used = Boolean(card.usage?.usedAt);
+  els.usagePanel.classList.remove("is-hidden");
+  els.useCardButton.disabled = false;
+  els.useCardButton.textContent = used ? "取消使用" : "使用这张卡";
+  els.usedTimeText.textContent = used
+    ? `使用时间：${formatFullDateTime(card.usage.usedAt)}`
+    : "使用后会记录时间，也可以写下这张卡带来的回忆。";
+  els.memoryField.classList.toggle("is-hidden", !used);
+  els.memoryInput.value = card.usage?.memory || "";
+  els.editCustomFromUsageButton.classList.add("is-hidden");
+  els.usageMessage.textContent = used ? "修改回忆时会自动保存在这个浏览器里。" : "";
+}
+
+function renderDetailUsagePanel(card) {
+  const used = Boolean(card.usage?.usedAt);
+  els.detailUseCardButton.disabled = false;
+  els.detailUseCardButton.textContent = used ? "取消使用" : "使用这张卡";
+  els.detailUsedTimeText.textContent = used
+    ? `使用时间：${formatFullDateTime(card.usage.usedAt)}`
+    : "使用后会记录时间，也可以写下这张卡带来的回忆。";
+  els.detailMemoryField.classList.toggle("is-hidden", !used);
+  els.detailMemoryInput.value = card.usage?.memory || "";
+  els.detailEditCustomButton.classList.add("is-hidden");
+  els.detailUsageMessage.textContent = used ? "修改回忆时会自动保存在这个浏览器里。" : "";
+}
+
+function hideUsagePanel() {
+  els.usagePanel.classList.add("is-hidden");
+  els.usageMessage.textContent = "";
+}
+
+function markCurrentCardUsed() {
+  if (!state.currentCard) {
+    return;
+  }
+
+  const updatedCard = toggleCardUsage(state.currentCard.id, els.memoryInput.value.trim());
+  state.currentCard = updatedCard;
+  renderPublicState(buildPublicState(), updatedCard);
+  renderCard(updatedCard);
+  els.drawCard.classList.add("is-flipped");
+  els.usageMessage.textContent = updatedCard.usage?.usedAt
+    ? "已经标记使用，可以写下这次的回忆。"
+    : "已经恢复为未使用。";
+}
+
+function markDetailCardUsed() {
+  if (!state.detailCard) {
+    return;
+  }
+
+  const updatedCard = toggleCardUsage(state.detailCard.id, els.detailMemoryInput.value.trim());
+  state.detailCard = updatedCard;
+  renderPublicState(buildPublicState());
+  openCardDetail(updatedCard);
+  els.detailUsageMessage.textContent = updatedCard.usage?.usedAt
+    ? "已经标记使用，可以写下这次的回忆。"
+    : "已经恢复为未使用。";
+}
+
+function toggleCardUsage(cardId, memory) {
+  const localState = readLocalState();
+  const existing = localState.usageById[cardId] || {};
+
+  if (existing.usedAt) {
+    localState.usageById[cardId] = {
+      memory: existing.memory || memory || ""
+    };
+  } else {
+    localState.usageById[cardId] = {
+      usedAt: new Date().toISOString(),
+      memory: memory || existing.memory || ""
+    };
+  }
+
+  writeLocalState(localState);
+  return getCardById(cardId, localState);
+}
+
+function queueMemorySave() {
+  if (!state.currentCard?.usage?.usedAt) {
+    return;
+  }
+
+  window.clearTimeout(state.memorySaveTimer);
+  els.usageMessage.textContent = "正在保存回忆...";
+  state.memorySaveTimer = window.setTimeout(() => {
+    const updatedCard = saveCardMemory(state.currentCard.id, els.memoryInput.value.trim());
+    state.currentCard = updatedCard;
+    renderPublicState(buildPublicState(), updatedCard);
+    renderCard(updatedCard);
+    els.drawCard.classList.add("is-flipped");
+    els.usageMessage.textContent = "回忆已经保存在这个浏览器里。";
+  }, 650);
+}
+
+function queueDetailMemorySave() {
+  if (!state.detailCard?.usage?.usedAt) {
+    return;
+  }
+
+  window.clearTimeout(state.detailMemorySaveTimer);
+  els.detailUsageMessage.textContent = "正在保存回忆...";
+  state.detailMemorySaveTimer = window.setTimeout(() => {
+    const updatedCard = saveCardMemory(state.detailCard.id, els.detailMemoryInput.value.trim());
+    state.detailCard = updatedCard;
+    renderPublicState(buildPublicState());
+    openCardDetail(updatedCard);
+    els.detailUsageMessage.textContent = "回忆已经保存在这个浏览器里。";
+  }, 650);
+}
+
+function saveCardMemory(cardId, memory) {
+  const localState = readLocalState();
+  const existing = localState.usageById[cardId] || {};
+  localState.usageById[cardId] = {
+    ...existing,
+    memory
+  };
+  writeLocalState(localState);
+  return getCardById(cardId, localState);
+}
+
+function readLocalState() {
+  const fallback = {
+    collectionIds: [],
+    history: [],
+    usageById: {}
+  };
+
+  try {
+    const parsed = JSON.parse(localStorage.getItem(CONFIG.storageKey) || "null");
+    if (!parsed || typeof parsed !== "object") {
+      return fallback;
+    }
+
+    return {
+      collectionIds: Array.isArray(parsed.collectionIds)
+        ? parsed.collectionIds.filter((id, index, all) => cards.some((card) => card.id === id) && all.indexOf(id) === index)
+        : [],
+      history: Array.isArray(parsed.history) ? parsed.history : [],
+      usageById: parsed.usageById && typeof parsed.usageById === "object" ? parsed.usageById : {}
+    };
+  } catch (error) {
+    return fallback;
+  }
+}
+
+function writeLocalState(nextState) {
+  localStorage.setItem(CONFIG.storageKey, JSON.stringify(nextState));
+}
+
+function getCardById(cardId, localState = readLocalState()) {
+  const card = cards.find((item) => item.id === cardId);
+  if (!card) {
+    return null;
+  }
+
+  return hydrateCard(card, localState);
+}
+
+function hydrateCard(card, localState = readLocalState()) {
+  return {
+    ...card,
+    accent: getCardAccent(card),
+    rarityLine: card.rarityLine || getRarityLine(card),
+    collectedAt: getCollectedAt(card.id, localState),
+    usage: localState.usageById[card.id] || {}
+  };
+}
+
+function getCollectedAt(cardId, localState) {
+  const record = [...(localState.history || [])].reverse().find((item) => item.cardId === cardId);
+  return record?.drawnAt || null;
+}
+
+function getCardAccent(card) {
+  const tier = card?.rarityTier || "A";
+  return card?.accent || RARITY_META[tier]?.accent || "#ff8fa8";
+}
+
+function getRarityWeight(card) {
+  return RARITY_META[card.rarityTier]?.weight || 1;
+}
+
+function getRarityLine(card) {
+  return RARITY_META[card.rarityTier]?.rarityLine || "今日喜欢";
+}
+
+function startCountdown() {
+  window.clearInterval(state.countdownTimer);
+  updateCountdown();
+  state.countdownTimer = window.setInterval(updateCountdown, 1000);
+}
+
+function updateCountdown() {
+  const diff = Math.max(0, CONFIG.targetDate.getTime() - Date.now());
+  const totalSeconds = Math.floor(diff / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  els.countdownText.textContent = `${days} 天 ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+}
+
+function setStatus(message) {
+  els.statusLine.textContent = message;
+}
+
+function formatCollectedDate(value) {
+  if (!value) {
+    return "抽到日期：未知";
+  }
+
+  return `抽到日期：${new Intl.DateTimeFormat("zh-CN", {
+    timeZone: "Asia/Shanghai",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(new Date(value))}`;
+}
+
+function formatFullDateTime(value) {
+  return new Intl.DateTimeFormat("zh-CN", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
+  }).format(new Date(value));
+}
+
+function wait(ms) {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+function pad(value) {
+  return String(value).padStart(2, "0");
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function trimEndingPeriod(value) {
+  return String(value).replace(/[。.]$/, "");
+}
+
+    </script>
+  </body>
+</html>
